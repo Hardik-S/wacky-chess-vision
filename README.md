@@ -20,14 +20,17 @@ This public repo packages a lightweight, reproducible benchmark for the resume c
 
 The synthetic task classifies whether a board position is `standard`, `rotated`, or `occluded`. The baseline does not claim deep-learning performance. It exists so future CNN or domain-adaptation work has a stable, testable entry point.
 
+The CLI can now export a deterministic text board snapshot. This is intentionally lighter than PNG generation, but it makes the synthetic vision contract visible before adding image dependencies.
+
 Run:
 
 ```powershell
 python -m unittest discover -s tests
 python src\wacky_chess_vision.py --seed 42 --samples 18
+python src\wacky_chess_vision.py --seed 42 --samples 18 --write-snapshot artifacts\board_snapshot.txt
 ```
 
 ## Next Work
 
-The next meaningful improvement is a tiny image renderer that exports generated boards as PNG fixtures. That should happen before adding a neural network so the data contract is visible and reviewable.
+The next meaningful improvement is a tiny image renderer that exports generated boards as PNG fixtures. The text snapshot added here is the prerequisite contract: it defines which anchors are visible, hidden, and reviewable before image assets exist.
 

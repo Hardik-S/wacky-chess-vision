@@ -78,6 +78,23 @@ def evaluate(samples: list[BoardSample]) -> dict[str, float | int]:
     }
 
 
+def render_board_snapshot(sample: BoardSample) -> str:
+    visible = set(sample.visible_anchors)
+    lines = [
+        f"sample={sample.sample_id} label={sample.label} rotation={sample.rotation_degrees}",
+    ]
+
+    for rank in range(8, 0, -1):
+        row = []
+        for file_name in "abcdefgh":
+            square = f"{file_name}{rank}"
+            row.append(square if square in visible else "--")
+        lines.append(f"{rank} " + " ".join(row))
+
+    lines.append("  a  b  c  d  e  f  g  h")
+    return "\n".join(lines)
+
+
 def write_csv(samples: list[BoardSample], path: Path) -> None:
     path.parent.mkdir(parents=True, exist_ok=True)
     with path.open("w", newline="", encoding="utf-8") as handle:
@@ -92,6 +109,7 @@ def main() -> None:
     parser.add_argument("--seed", type=int, default=42)
     parser.add_argument("--samples", type=int, default=18)
     parser.add_argument("--write-csv", type=Path)
+    parser.add_argument("--write-snapshot", type=Path)
     args = parser.parse_args()
 
     samples = generate_samples(seed=args.seed, samples=args.samples)
@@ -100,6 +118,9 @@ def main() -> None:
 
     if args.write_csv:
         write_csv(samples, args.write_csv)
+    if args.write_snapshot:
+        args.write_snapshot.parent.mkdir(parents=True, exist_ok=True)
+        args.write_snapshot.write_text(render_board_snapshot(samples[0]) + "\n", encoding="utf-8")
 
     print(f"samples={metrics['samples']}")
     print(f"accuracy={metrics['accuracy']:.3f}")

@@ -16,6 +16,8 @@ The generator uses structured records rather than image files in this first pass
 
 The baseline classifier is rule-based on purpose. It establishes a minimum benchmark and catches accidental label drift before more complex models are added.
 
+Run7 adds a deterministic text snapshot renderer. This was chosen before PNG export because it gives reviewers an inspectable board contract without adding image libraries or binary artifacts.
+
 ## Rejected Approaches
 
 - Downloading public chess photos was rejected because licensing and annotation quality would be unclear.
@@ -29,6 +31,7 @@ Every run should pass:
 ```powershell
 python -m unittest discover -s tests
 python src\wacky_chess_vision.py --seed 42 --samples 18
+python src\wacky_chess_vision.py --seed 42 --samples 18 --write-snapshot artifacts\board_snapshot.txt
 ```
 
 The CLI reports label counts and baseline accuracy for the deterministic fixture.
