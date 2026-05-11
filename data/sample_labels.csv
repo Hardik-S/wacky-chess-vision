@@ -1,0 +1,5 @@
+sample_id,label,rotation_degrees,visible_anchor_count,visible_anchors
+synthetic-0000,standard,0,6,a1 h1 a8 h8 e1 e8
+synthetic-0001,rotated,270,6,a1 h1 a8 h8 e1 e8
+synthetic-0002,occluded,0,5,a1 h1 a8 h8 e8
+
